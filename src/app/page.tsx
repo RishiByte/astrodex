@@ -7,10 +7,18 @@ import { LeftSidebar } from "@/components/LeftSidebar"
 import { RightSidebar } from "@/components/RightSidebar"
 import { AgentTerminal } from "@/components/AgentTerminal"
 import { AsteroidCard } from "@/components/AsteroidCard"
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts"
+import { useRealtimeConjunctions } from "@/hooks/useRealtimeConjunctions"
 
 const Scene = dynamic(() => import("@/components/Scene").then((m) => ({ default: m.Scene })), {
   ssr: false,
 })
+
+function ShortcutManager() {
+  useKeyboardShortcuts()
+  useRealtimeConjunctions()
+  return null
+}
 
 export default function Home() {
   return (
