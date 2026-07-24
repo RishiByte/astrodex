@@ -101,12 +101,32 @@ export function Earth({ sunDirection }: EarthProps) {
     const night = new THREE.CanvasTexture(createProceduralNightTexture())
     const spec = new THREE.CanvasTexture(createProceduralSpecularTexture())
     const cloud = new THREE.CanvasTexture(createProceduralCloudTexture())
+
+    // Store the old textures to dispose them
+    const oldDay = uniformsRef.current.dayTexture.value
+    const oldNight = uniformsRef.current.nightTexture.value
+    const oldSpec = uniformsRef.current.specularTexture.value
+    const oldCloud = uniformsRef.current.cloudShadowTexture.value
+
     uniformsRef.current.dayTexture.value = day
     uniformsRef.current.nightTexture.value = night
     uniformsRef.current.specularTexture.value = spec
     uniformsRef.current.cloudShadowTexture.value = cloud
     // sunDirection is constant — set once
     uniformsRef.current.sunDirection.value.copy(sunDirection)
+    
+    // Dispose initial default textures to avoid memory leaks
+    oldDay.dispose()
+    oldNight.dispose()
+    oldSpec.dispose()
+    oldCloud.dispose()
+
+    return () => {
+      day.dispose()
+      night.dispose()
+      spec.dispose()
+      cloud.dispose()
+    }
   }, [sunDirection])
 
   useFrame((_, delta) => {
