@@ -61,6 +61,12 @@ export function Scene() {
       >
         <SceneContent />
       </Canvas>
+      {/* 
+        Review the WebGL Loading Spinner (#414): 
+        Currently relying on Suspense/fallback boundaries up the tree.
+        Consider using @react-three/drei's <Loader /> for a WebGL-native
+        loading screen overlay that tracks exact asset decoding progress.
+      */}
     </div>
   )
 }
