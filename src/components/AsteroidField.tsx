@@ -131,7 +131,8 @@ export function AsteroidField({ onAsteroidClick, getSelectedIndex }: AsteroidFie
   useFrame((state, delta) => {
     const asteroidMesh = asteroidMeshRef.current
     const debrisMesh = debrisMeshRef.current
-    if (!asteroidMesh || !debrisMesh) return
+    // Fix edge cases in the Asteroid InstancedMesh (#424)
+    if (!asteroidMesh || !debrisMesh || !asteroidMesh.instanceMatrix || !debrisMesh.instanceMatrix) return
 
     const selectedIdx = getSelectedIndex()
     const t = state.clock.getElapsedTime()
