@@ -76,12 +76,15 @@ interface EarthProps {
 }
 
 function makeDefaultTexture() {
+  if (typeof document === "undefined") return null
   const canvas = document.createElement("canvas")
   canvas.width = 2
   canvas.height = 2
-  const ctx = canvas.getContext("2d")!
-  ctx.fillStyle = "#4488cc"
-  ctx.fillRect(0, 0, 2, 2)
+  const ctx = canvas.getContext("2d")
+  if (ctx) {
+    ctx.fillStyle = "#4488cc"
+    ctx.fillRect(0, 0, 2, 2)
+  }
   return new THREE.CanvasTexture(canvas)
 }
 
