@@ -11,6 +11,11 @@ const EARTH_TARGET = new THREE.Vector3(0, 0, 0)
 const _offset = new THREE.Vector3()
 const _lookTarget = new THREE.Vector3()
 
+// Audit memory leaks in the Camera Lerp logic (#390)
+// Audit results: No leaks found. Pre-allocated scratch vectors (_offset, _lookTarget)
+// are module-level singletons — they are never GC'd and never grow.
+// useEffect cleanup: clearReset() is a stable reference (no closure capture of mutable state).
+// useFrame: uses `delta` from R3F's internal scheduler — no timer or interval to clean up.
 export function CameraController() {
   const { camera } = useThree()
   const { selectedAsteroid, resetCamera, clearReset } = useAppState()
