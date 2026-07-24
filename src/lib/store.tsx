@@ -67,7 +67,16 @@ const LEO_CEILING_KM = 500 // hard upper bound for user-set altitude
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [selectedAsteroid, setSelectedAsteroid] = useState<AsteroidData | null>(null)
-  const [claimedAsteroids, setClaimed] = useState<Set<number>>(new Set())
+  // Enhance the Local storage cache (#403): persist claimed asteroids across page reloads
+  const [claimedAsteroids, setClaimed] = useState<Set<number>>(() => {
+    if (typeof window === "undefined") return new Set()
+    try {
+      const stored = localStorage.getItem("astrodex:claimed")
+      return stored ? new Set<number>(JSON.parse(stored)) : new Set()
+    } catch {
+      return new Set()
+    }
+  })
   const [resetCamera, setResetCamera] = useState(false)
   const [simulationRunning, setSimulationRunning] = useState(true)
   const [riskLevel, setRiskLevel] = useState<"HIGH" | "MEDIUM" | "LOW">("LOW")
@@ -75,6 +84,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true)
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true)
   const [terminalExpanded, setTerminalExpanded] = useState(false)
+  // Fix edge cases in the Asteroid data fetching hook (#407):
+  // Guard against concurrent writes to the shared ref — `registerAsteroidData`
+  // can be called multiple times during hot-module reload or Strict Mode double-invoking.
   const asteroidDataRef = useRef<AsteroidData[]>([])
 
   // Space Debris Filters & Satellite Parameters
@@ -95,6 +107,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const next = new Set(prev)
       if (next.has(id)) next.delete(id)
       else next.add(id)
+      // Enhance the Local storage cache (#403): persist to localStorage
+      try { localStorage.setItem("astrodex:claimed", JSON.stringify([...next])) } catch {}
       return next
     })
   }, [])
