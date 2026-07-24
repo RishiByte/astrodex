@@ -2,7 +2,7 @@
 
 import { useAppState } from "@/lib/store"
 
-export function AsteroidCard() {
+export function AsteroidCardContent() {
   const {
     selectedAsteroid,
     claimedAsteroids,
@@ -164,5 +164,38 @@ export function AsteroidCard() {
         </div>
       </div>
     </div>
+  )
+}
+
+// Sandbox Error Boundary for AsteroidCard
+import React, { Component, ReactNode } from "react"
+
+class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: ReactNode }) {
+    super(props)
+    this.state = { hasError: false }
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="glass-panel" style={{ position: "fixed", top: "100px", left: "24px", padding: "16px", color: "var(--accent-red)", zIndex: 50 }}>
+          Asteroid Inspector Error
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
+
+export function AsteroidCard() {
+  return (
+    <ErrorBoundary>
+      <AsteroidCardContent />
+    </ErrorBoundary>
   )
 }
