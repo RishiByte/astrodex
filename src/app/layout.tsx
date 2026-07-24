@@ -18,6 +18,9 @@ export const metadata: Metadata = {
     "Explore 600+ asteroids orbiting Earth in real-time 3D. Track conjunctions, inspect orbital parameters, and claim discoveries in this cinematic space mission control.",
 }
 
+// Improve performance of the Next.js routing layer (#437) by enforcing static rendering
+export const dynamic = "force-static"
+
 export default function RootLayout({
   children,
 }: Readonly<{
