@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useCallback, useMemo } from "react"
+import { useRef, useCallback, useMemo, Suspense } from "react"
 import { Canvas } from "@react-three/fiber"
 import { Stars } from "@react-three/drei"
 import * as THREE from "three"
@@ -12,6 +12,7 @@ import { AsteroidField, trackedPosition } from "./AsteroidField"
 import { SatelliteSystem } from "./SatelliteSystem"
 import { CameraController } from "./CameraController"
 import { Effects } from "./Effects"
+import { WebGLFallback } from "./WebGLFallback"
 import { useAppState } from "@/lib/store"
 
 function SceneContent() {
@@ -59,7 +60,9 @@ export function Scene() {
         camera={{ position: [0, 0, 6], fov: 45, near: 0.1, far: 100 }}
         gl={{ antialias: true, alpha: false }}
       >
-        <SceneContent />
+        <Suspense fallback={<WebGLFallback />}>
+          <SceneContent />
+        </Suspense>
       </Canvas>
     </div>
   )
