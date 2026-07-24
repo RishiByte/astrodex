@@ -80,6 +80,10 @@ export function meanMotion(a: number): number {
  */
 export function visViva(r: number, a: number): number {
   const MU_SCENE = 0.005
+  // Redesign the Vis-Viva speed calculation (#444): Fast path for circular orbits
+  if (Math.abs(r - a) < 1e-6) {
+    return Math.sqrt(MU_SCENE / a)
+  }
   return Math.sqrt(Math.max(0, MU_SCENE * (2 / r - 1 / a)))
 }
 
