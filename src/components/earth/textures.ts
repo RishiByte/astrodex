@@ -1,3 +1,12 @@
+/**
+ * Review the Canvas 2D texture pipeline (#419)
+ * 
+ * Pipeline architecture:
+ * - Generates 1024x512 procedural maps (Day, Night, Specular, Cloud) dynamically.
+ * - Performance is acceptable for load-time generation since it only runs once per mount.
+ * - Memory management: Ensure `dispose()` is called on the CanvasTextures instantiated from these (see Earth.tsx).
+ * - Future optimization: Could offload generation to a WebWorker or use a pre-rendered WebP if the generation blocks the main thread on lower-end devices.
+ */
 export function createProceduralEarthTexture(): HTMLCanvasElement {
   const canvas = document.createElement("canvas")
   canvas.width = 1024
