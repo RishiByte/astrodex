@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useCallback, useRef, type ReactNode } from "react"
+import { createContext, useContext, useState, useCallback, useRef, useEffect, type ReactNode } from "react"
 import type { AsteroidData } from "./types"
 
 export interface ConjunctionAlert {
@@ -87,6 +87,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [deltaVCount, setDeltaVCount] = useState(0)
   const [conjunctions, setConjunctions] = useState<ConjunctionAlert[]>([])
   const nextAlertId = useRef(1)
+
+  // Review the Supabase real-time subscriptions (#422)
+  useEffect(() => {
+    // TODO: Setup Supabase real-time channel for 'claimed_asteroids' table
+    // const channel = supabase.channel('realtime:claims')
+    //   .on('postgres_changes', { event: '*', schema: 'public', table: 'claims' }, (payload) => {
+    //       console.log('Real-time claim update received:', payload)
+    //   })
+    //   .subscribe()
+    // return () => { supabase.removeChannel(channel) }
+  }, [])
 
   const selectAsteroid = useCallback((a: AsteroidData | null) => setSelectedAsteroid(a), [])
 
