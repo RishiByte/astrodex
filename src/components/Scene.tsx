@@ -14,6 +14,14 @@ import { CameraController } from "./CameraController"
 import { Effects } from "./Effects"
 import { useAppState } from "@/lib/store"
 
+/**
+ * SceneContent Provider (#432)
+ * 
+ * Orchestrates the primary React Three Fiber 3D scene elements including the Earth, 
+ * orbital objects (Asteroids, Satellites), lighting, and camera logic.
+ * Ensures that post-processing effects and background environments are applied 
+ * cohesively within the same WebGL context.
+ */
 function SceneContent() {
   const sunDirection = useMemo(() => new THREE.Vector3(5, 3, 5).normalize(), [])
   const { selectAsteroid } = useAppState()
