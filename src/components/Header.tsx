@@ -77,7 +77,18 @@ export function Header() {
       </div>
 
       {/* Center: Controls */}
-      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+      <div 
+        style={{ 
+          display: "flex", 
+          alignItems: "center", 
+          gap: 14,
+          padding: "6px 16px",
+          background: "rgba(10, 16, 28, 0.6)",
+          borderRadius: "var(--radius-full)",
+          border: "1px solid rgba(56, 189, 248, 0.15)",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)"
+        }}
+      >
         <button className="btn-primary" onClick={toggleSimulation}>
           <svg
             width="12"
