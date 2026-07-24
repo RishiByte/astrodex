@@ -2,7 +2,7 @@
 
 import { useRef, useCallback, useMemo } from "react"
 import { Canvas } from "@react-three/fiber"
-import { Stars } from "@react-three/drei"
+import { Stars, Loader } from "@react-three/drei"
 import * as THREE from "three"
 
 import { Earth } from "./earth/Earth"
@@ -61,6 +61,13 @@ export function Scene() {
       >
         <SceneContent />
       </Canvas>
+      {/* Optimize the WebGL Loading Spinner (#426) */}
+      <Loader
+        containerStyles={{ zIndex: 99, background: 'var(--bg-deep)' }}
+        innerStyles={{ width: '300px', height: '4px', borderRadius: '4px', background: 'var(--border-subtle)' }}
+        barStyles={{ height: '4px', borderRadius: '4px', background: 'var(--accent-cyan)' }}
+        dataInterpolation={(p) => `Initializing Systems: ${p.toFixed(0)}%`}
+      />
     </div>
   )
 }
