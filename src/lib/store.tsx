@@ -67,7 +67,16 @@ const LEO_CEILING_KM = 500 // hard upper bound for user-set altitude
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [selectedAsteroid, setSelectedAsteroid] = useState<AsteroidData | null>(null)
-  const [claimedAsteroids, setClaimed] = useState<Set<number>>(new Set())
+  
+  // Refactor Local storage cache for claimed asteroids
+  const [claimedAsteroids, setClaimed] = useState<Set<number>>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("astrodex_claimed")
+      if (saved) return new Set(JSON.parse(saved))
+    }
+    return new Set()
+  })
+
   const [resetCamera, setResetCamera] = useState(false)
   const [simulationRunning, setSimulationRunning] = useState(true)
   const [riskLevel, setRiskLevel] = useState<"HIGH" | "MEDIUM" | "LOW">("LOW")
@@ -95,6 +104,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const next = new Set(prev)
       if (next.has(id)) next.delete(id)
       else next.add(id)
+      if (typeof window !== "undefined") {
+        localStorage.setItem("astrodex_claimed", JSON.stringify(Array.from(next)))
+      }
       return next
     })
   }, [])
