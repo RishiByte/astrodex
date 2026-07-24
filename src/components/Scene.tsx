@@ -2,7 +2,7 @@
 
 import { useRef, useCallback, useMemo } from "react"
 import { Canvas } from "@react-three/fiber"
-import { Stars } from "@react-three/drei"
+import { Stars, Stats, Loader } from "@react-three/drei"
 import * as THREE from "three"
 
 import { Earth } from "./earth/Earth"
@@ -60,7 +60,11 @@ export function Scene() {
         gl={{ antialias: true, alpha: false }}
       >
         <SceneContent />
+        {/* Update styling for the Framerate monitor (#440) */}
+        <Stats className="framerate-monitor" />
       </Canvas>
+      {/* Migrate the WebGL Loading Spinner (#435) */}
+      <Loader containerStyles={{ zIndex: 99 }} />
     </div>
   )
 }
