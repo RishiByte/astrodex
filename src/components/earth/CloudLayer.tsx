@@ -6,6 +6,8 @@ import * as THREE from "three"
 import { createProceduralCloudTexture } from "./textures"
 
 const vertexShader = `
+precision highp float;
+
 uniform sampler2D cloudTexture;
 varying vec2 vUv;
 varying vec3 vNormal;
@@ -25,6 +27,8 @@ void main() {
 `
 
 const fragmentShader = `
+precision highp float;
+
 uniform sampler2D cloudTexture;
 uniform vec3 sunDirection;
 
