@@ -27,16 +27,28 @@ void main() {
   vec3 normal = normalize(vNormal);
   vec3 viewDir = normalize(-vPosition);
 
+  // Optical depth approximation based on viewing angle
   float fresnel = 1.0 - max(dot(viewDir, normal), 0.0);
-  fresnel = pow(fresnel, 3.0);
+  fresnel = pow(fresnel, 4.0);
 
   vec3 sunDir = normalize(sunDirection);
+  
+  // Diffuse lighting from sun
   float sunFace = dot(normalize(vWorldNormal), sunDir);
+  
+  // Soften the terminator line for atmospheric scattering
+  float terminator = smoothstep(-0.2, 0.2, sunFace);
   float daySide = clamp(sunFace * 0.5 + 0.5, 0.0, 1.0);
 
-  vec3 atmosphereColor = vec3(0.3, 0.6, 1.0);
+  // Rayleigh-like scattering color approximation
+  vec3 dayColor = vec3(0.3, 0.6, 1.0); // Blue sky
+  vec3 sunsetColor = vec3(0.8, 0.4, 0.2); // Sunset hues
 
-  float alpha = fresnel * daySide * 0.5;
+  // Mix colors based on proximity to the terminator line
+  vec3 atmosphereColor = mix(sunsetColor, dayColor, terminator);
+
+  // Final alpha computation combining fresnel rim and day side
+  float alpha = fresnel * daySide * 0.7;
 
   gl_FragColor = vec4(atmosphereColor, alpha);
 }
