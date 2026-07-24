@@ -72,9 +72,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [simulationRunning, setSimulationRunning] = useState(true)
   const [riskLevel, setRiskLevel] = useState<"HIGH" | "MEDIUM" | "LOW">("LOW")
 
-  const [leftSidebarOpen, setLeftSidebarOpen] = useState(true)
-  const [rightSidebarOpen, setRightSidebarOpen] = useState(true)
-  const [terminalExpanded, setTerminalExpanded] = useState(false)
+  const [uiState, setUiState] = useState({
+    leftSidebarOpen: true,
+    rightSidebarOpen: true,
+    terminalExpanded: false,
+  })
+
+  const toggleLeftSidebar = useCallback(() => setUiState((p) => ({ ...p, leftSidebarOpen: !p.leftSidebarOpen })), [])
+  const toggleRightSidebar = useCallback(() => setUiState((p) => ({ ...p, rightSidebarOpen: !p.rightSidebarOpen })), [])
+  const toggleTerminal = useCallback(() => setUiState((p) => ({ ...p, terminalExpanded: !p.terminalExpanded })), [])
+
   const asteroidDataRef = useRef<AsteroidData[]>([])
 
   // Space Debris Filters & Satellite Parameters
@@ -104,11 +111,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setSelectedAsteroid(null)
   }, [])
   const clearReset = useCallback(() => setResetCamera(false), [])
-
-  const toggleSimulation = useCallback(() => setSimulationRunning((p) => !p), [])
-  const toggleLeftSidebar = useCallback(() => setLeftSidebarOpen((p) => !p), [])
-  const toggleRightSidebar = useCallback(() => setRightSidebarOpen((p) => !p), [])
-  const toggleTerminal = useCallback(() => setTerminalExpanded((p) => !p), [])
 
   const registerAsteroidData = useCallback((data: AsteroidData[]) => {
     asteroidDataRef.current = data
@@ -186,9 +188,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         simulationRunning,
         toggleSimulation,
         riskLevel,
-        leftSidebarOpen,
-        rightSidebarOpen,
-        terminalExpanded,
+        leftSidebarOpen: uiState.leftSidebarOpen,
+        rightSidebarOpen: uiState.rightSidebarOpen,
+        terminalExpanded: uiState.terminalExpanded,
         toggleLeftSidebar,
         toggleRightSidebar,
         toggleTerminal,
