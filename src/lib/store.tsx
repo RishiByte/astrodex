@@ -70,7 +70,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [claimedAsteroids, setClaimed] = useState<Set<number>>(new Set())
   const [resetCamera, setResetCamera] = useState(false)
   const [simulationRunning, setSimulationRunning] = useState(true)
-  const [riskLevel, setRiskLevel] = useState<"HIGH" | "MEDIUM" | "LOW">("LOW")
 
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true)
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true)
@@ -155,23 +154,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
       if (exists) return prev
 
       const newAlert = { ...alert, id: nextAlertId.current++ }
-      const updated = [newAlert, ...prev].slice(0, 15) // Keep last 15 alerts
-
-      // Update global risk level based on the highest risk in the feed
-      const hasHigh = updated.some((c) => c.risk === "HIGH")
-      const hasMedium = updated.some((c) => c.risk === "MEDIUM")
-      if (hasHigh) setRiskLevel("HIGH")
-      else if (hasMedium) setRiskLevel("MEDIUM")
-      else setRiskLevel("LOW")
-
-      return updated
+      return [newAlert, ...prev].slice(0, 15) // Keep last 15 alerts
     })
   }, [])
 
   const clearConjunctions = useCallback(() => {
     setConjunctions([])
-    setRiskLevel("LOW")
   }, [])
+
+  const riskLevel = useMemo(() => {
+    if (conjunctions.some((c) => c.risk === "HIGH")) return "HIGH"
+    if (conjunctions.some((c) => c.risk === "MEDIUM")) return "MEDIUM"
+    return "LOW"
+  }, [conjunctions])
 
   return (
     <AppContext.Provider
