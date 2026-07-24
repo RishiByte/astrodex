@@ -61,6 +61,7 @@ interface AppState {
 }
 
 const AppContext = createContext<AppState | null>(null)
+AppContext.displayName = "AstrodexAppContext"
 
 const LEO_FLOOR_KM = 180 // cannot decay below ~180 km (re-entry threshold)
 const LEO_CEILING_KM = 500 // hard upper bound for user-set altitude
