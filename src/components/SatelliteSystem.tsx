@@ -81,6 +81,28 @@ export const satellitePositions = {
   hubble: new THREE.Vector3(),
 }
 
+interface OrbitVisualizerProps {
+  geometry: THREE.BufferGeometry
+  color: string
+  opacity: number
+  meshRef: React.RefObject<THREE.Mesh>
+  sphereArgs?: [number, number, number]
+}
+
+function OrbitVisualizer({ geometry, color, opacity, meshRef, sphereArgs = [0.035, 16, 16] }: OrbitVisualizerProps) {
+  return (
+    <group>
+      <lineLoop geometry={geometry}>
+        <lineBasicMaterial color={color} opacity={opacity} transparent linewidth={1} />
+      </lineLoop>
+      <mesh ref={meshRef}>
+        <sphereGeometry args={sphereArgs} />
+        <meshBasicMaterial color={color} />
+      </mesh>
+    </group>
+  )
+}
+
 export function SatelliteSystem() {
   const {
     simulationRunning,
@@ -143,32 +165,27 @@ export function SatelliteSystem() {
 
   return (
     <group>
-      {/* ─── ISS Orbit ─── */}
-      <lineLoop geometry={issOrbitGeo}>
-        <lineBasicMaterial color="#38bdf8" opacity={0.35} transparent linewidth={1} />
-      </lineLoop>
-      <mesh ref={issRef}>
-        <sphereGeometry args={[0.04, 16, 16]} />
-        <meshBasicMaterial color="#38bdf8" />
-      </mesh>
-
-      {/* ─── Envisat Orbit ─── */}
-      <lineLoop geometry={envisatOrbitGeo}>
-        <lineBasicMaterial color="#fbbf24" opacity={0.25} transparent linewidth={1} />
-      </lineLoop>
-      <mesh ref={envisatRef}>
-        <sphereGeometry args={[0.035, 16, 16]} />
-        <meshBasicMaterial color="#fbbf24" />
-      </mesh>
-
-      {/* ─── Hubble Orbit ─── */}
-      <lineLoop geometry={hubbleOrbitGeo}>
-        <lineBasicMaterial color="#34d399" opacity={0.25} transparent linewidth={1} />
-      </lineLoop>
-      <mesh ref={hubbleRef}>
-        <sphereGeometry args={[0.03, 16, 16]} />
-        <meshBasicMaterial color="#34d399" />
-      </mesh>
+      <OrbitVisualizer 
+        geometry={issOrbitGeo} 
+        color="#38bdf8" 
+        opacity={0.35} 
+        meshRef={issRef} 
+        sphereArgs={[0.04, 16, 16]} 
+      />
+      <OrbitVisualizer 
+        geometry={envisatOrbitGeo} 
+        color="#fbbf24" 
+        opacity={0.25} 
+        meshRef={envisatRef} 
+        sphereArgs={[0.035, 16, 16]} 
+      />
+      <OrbitVisualizer 
+        geometry={hubbleOrbitGeo} 
+        color="#34d399" 
+        opacity={0.25} 
+        meshRef={hubbleRef} 
+        sphereArgs={[0.03, 16, 16]} 
+      />
     </group>
   )
 }
