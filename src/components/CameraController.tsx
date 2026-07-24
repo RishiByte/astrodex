@@ -20,10 +20,14 @@ export function CameraController() {
 
   useEffect(() => {
     if (resetCamera) {
+      performance.mark("zoom-reset-start")
       hasSelection.current = false
       targetPos.current.copy(EARTH_POSITION)
       targetLook.current.copy(EARTH_TARGET)
       clearReset()
+      if (process.env.NODE_ENV === "development") {
+        console.debug("[Zoom Control] Triggered camera reset (zoom out)")
+      }
     }
   }, [resetCamera, clearReset])
 
