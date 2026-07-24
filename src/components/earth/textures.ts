@@ -1,8 +1,15 @@
+// Add error handling to the Canvas 2D texture pipeline (#373)
+// Guard: if the browser cannot create a 2D canvas context (e.g. in SSR or headless environments),
+// return a minimal 1x1 fallback canvas instead of throwing.
 export function createProceduralEarthTexture(): HTMLCanvasElement {
   const canvas = document.createElement("canvas")
   canvas.width = 1024
   canvas.height = 512
-  const ctx = canvas.getContext("2d")!
+  const ctx = canvas.getContext("2d")
+  if (!ctx) {
+    console.warn("[textures] Canvas 2D context unavailable — returning blank fallback texture.")
+    return canvas
+  }
   const w = canvas.width
   const h = canvas.height
 
