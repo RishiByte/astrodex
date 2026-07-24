@@ -15,8 +15,12 @@
  * the conversion with the standard gravitational parameter μ_Earth = 3.986e5 km³/s².
  */
 
-const MU_EARTH_KM = 3.986e5 // km³/s²
-const KM_PER_UNIT = 3543 // 1 scene unit = 3543 km (Earth radius 6378 km = 1.8 units)
+export const KeplerConstants = {
+  MU_EARTH_KM: 3.986e5,
+  KM_PER_UNIT: 3543,
+  SCENE_TIME_SCALE: 60,
+  MU_SCENE: 0.005,
+} as const
 
 /**
  * Time scaling factor: scene seconds per real second.
@@ -24,7 +28,7 @@ const KM_PER_UNIT = 3543 // 1 scene unit = 3543 km (Earth radius 6378 km = 1.8 u
  * tens of seconds rather than ~90 minutes.  This is a presentation knob, not
  * a physical constant — relative Keplerian behavior is preserved.
  */
-export const SCENE_TIME_SCALE = 60
+export const SCENE_TIME_SCALE = KeplerConstants.SCENE_TIME_SCALE
 
 /**
  * Solve Kepler's equation  M = E − e·sin(E)  for the eccentric anomaly E.
@@ -34,9 +38,9 @@ export const SCENE_TIME_SCALE = 60
  *
  * @param M Mean anomaly in radians (can be any real value; wrapped to [−π, π]).
  * @param e Eccentricity in [0, 1).
- * @param tolerance Convergence threshold on |ΔE|, default 1e-7.
+ * @param tolerance Convergence threshold on |ΔE|, default 1e-8.
  */
-export function solveKepler(M: number, e: number, tolerance = 1e-7): number {
+export function solveKepler(M: number, e: number, tolerance = 1e-8): number {
   // Wrap M to [−π, π] so the initial guess is meaningful for any time t.
   const TAU = Math.PI * 2
   const m = ((M % TAU) + TAU + Math.PI) % TAU - Math.PI
@@ -44,7 +48,8 @@ export function solveKepler(M: number, e: number, tolerance = 1e-7): number {
   // Robust initial guess.
   let E = e < 0.8 ? m : Math.PI * Math.sign(m || 1)
 
-  for (let i = 0; i < 40; i++) {
+  // Tweaked for higher precision
+  for (let i = 0; i < 50; i++) {
     const f = E - e * Math.sin(E) - m
     const fp = 1 - e * Math.cos(E)
     const dE = f / fp
