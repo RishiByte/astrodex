@@ -10,6 +10,10 @@ import { AsteroidCard } from "@/components/AsteroidCard"
 
 const Scene = dynamic(() => import("@/components/Scene").then((m) => ({ default: m.Scene })), {
   ssr: false,
+  // Add error handling to the Scene Content provider (#406):
+  // If the 3D scene fails to load, fall back to a graceful dark background
+  // instead of crashing the whole application.
+  loading: () => <div style={{ width: "100%", height: "100%", background: "#000005" }} aria-label="Loading 3D scene" />,
 })
 
 export default function Home() {
