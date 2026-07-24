@@ -144,6 +144,9 @@ export function AsteroidCard() {
         {/* Action Buttons */}
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           <button
+            // Improve accessibility of the Claim Button UI (#436)
+            aria-pressed={isClaimed}
+            aria-label={isClaimed ? "Release Mining Claim for " + selectedAsteroid.name : "File Mining Claim for " + selectedAsteroid.name}
             onClick={() => claimAsteroid(selectedAsteroid.id)}
             className="btn-primary"
             style={{
@@ -157,6 +160,8 @@ export function AsteroidCard() {
               fontWeight: 700,
               letterSpacing: "0.06em",
               textTransform: "uppercase",
+              // Performance dependency trick (#450)
+              willChange: "transform, background-color",
             }}
           >
             {isClaimed ? "Release Mining Claim" : "File Mining Claim"}
