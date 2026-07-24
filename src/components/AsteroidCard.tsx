@@ -2,6 +2,7 @@
 
 import { useAppState } from "@/lib/store"
 
+// Add error handling to the Asteroid detail panel (#384)
 export function AsteroidCard() {
   const {
     selectedAsteroid,
@@ -12,6 +13,15 @@ export function AsteroidCard() {
   } = useAppState()
 
   if (!selectedAsteroid) return null
+
+  // Guard against malformed asteroid data
+  if (!selectedAsteroid.id || !selectedAsteroid.name) {
+    return (
+      <div role="alert" style={{ color: "red", padding: "8px", background: "rgba(239,68,68,0.1)", borderRadius: "6px" }}>
+        Error: Invalid asteroid data received.
+      </div>
+    )
+  }
 
   const isClaimed = claimedAsteroids.has(selectedAsteroid.id)
 
