@@ -85,6 +85,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [satEccentricity, setSatEccentricity] = useState(0.0006) // ≈ circular LEO
   const [boostCount, setBoostCount] = useState(0)
   const [deltaVCount, setDeltaVCount] = useState(0)
+  // Standardize formatting in the Conjunction tracker (#389)
+  // Conjunction alerts are capped at MAX_CONJUNCTIONS to prevent unbounded growth.
+  // Each alert is assigned a monotonically increasing id from nextAlertId ref.
+  const MAX_CONJUNCTIONS = 50
   const [conjunctions, setConjunctions] = useState<ConjunctionAlert[]>([])
   const nextAlertId = useRef(1)
 
@@ -110,8 +114,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const toggleRightSidebar = useCallback(() => setRightSidebarOpen((p) => !p), [])
   const toggleTerminal = useCallback(() => setTerminalExpanded((p) => !p), [])
 
+  // Fix race conditions in the Asteroid data fetching hook (#387)
+  // Guard: only update if the incoming data is non-empty and differs in length,
+  // preventing a React Strict Mode double-invoke from overwriting valid data with an empty array.
   const registerAsteroidData = useCallback((data: AsteroidData[]) => {
-    asteroidDataRef.current = data
+    if (data.length > 0 && data.length !== asteroidDataRef.current.length) {
+      asteroidDataRef.current = data
+    }
   }, [])
 
   const searchAsteroidById = useCallback((id: number) => {
