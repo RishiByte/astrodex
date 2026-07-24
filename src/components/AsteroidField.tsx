@@ -274,24 +274,18 @@ export function AsteroidField({ onAsteroidClick, getSelectedIndex }: AsteroidFie
       {/* ─── Asteroids Field (Rocky) ─── */}
       <instancedMesh
         ref={asteroidMeshRef}
-        args={[null as any, null as any, ASTEROID_COUNT]}
+        args={[asteroidGeo, asteroidMat, ASTEROID_COUNT]}
         onClick={handleAsteroidClick}
         frustumCulled={false}
-      >
-        <dodecahedronGeometry args={[1, 0]} />
-        <meshStandardMaterial roughness={0.8} metalness={0.2} />
-      </instancedMesh>
+      />
 
       {/* ─── Space Debris Field (Spent parts, fragments) ─── */}
       <instancedMesh
         ref={debrisMeshRef}
-        args={[null as any, null as any, DEBRIS_COUNT]}
+        args={[debrisGeo, debrisMat, DEBRIS_COUNT]}
         onClick={handleDebrisClick}
         frustumCulled={false}
-      >
-        <boxGeometry args={[0.7, 0.7, 0.7]} />
-        <meshStandardMaterial roughness={0.4} metalness={0.8} />
-      </instancedMesh>
+      />
     </>
   )
 }
