@@ -78,7 +78,9 @@ export function meanMotion(a: number): number {
  *
  *     v = sqrt( μ·(2/r − 1/a) )
  */
+// Enhance the Vis-Viva speed calculation (#420)
 export function visViva(r: number, a: number): number {
+  if (r <= 0 || a <= 0) return 0
   const MU_SCENE = 0.005
   return Math.sqrt(Math.max(0, MU_SCENE * (2 / r - 1 / a)))
 }
@@ -88,6 +90,7 @@ export function visViva(r: number, a: number): number {
  * Inspector telemetry readout where users expect km/s.
  */
 export function visVivaKmPerSec(rKm: number, aKm: number): number {
+  if (rKm <= 0 || aKm <= 0) return 0
   return Math.sqrt(Math.max(0, MU_EARTH_KM * (2 / rKm - 1 / aKm)))
 }
 
