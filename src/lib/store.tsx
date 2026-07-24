@@ -67,7 +67,17 @@ const LEO_CEILING_KM = 500 // hard upper bound for user-set altitude
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [selectedAsteroid, setSelectedAsteroid] = useState<AsteroidData | null>(null)
-  const [claimedAsteroids, setClaimed] = useState<Set<number>>(new Set())
+  const [claimedAsteroids, setClaimed] = useState<Set<number>>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("astrodex_claimed")
+        if (saved) return new Set(JSON.parse(saved))
+      } catch (error) {
+        console.error("Failed to parse claimed asteroids from local storage, sandboxing state:", error)
+      }
+    }
+    return new Set()
+  })
   const [resetCamera, setResetCamera] = useState(false)
   const [simulationRunning, setSimulationRunning] = useState(true)
   const [riskLevel, setRiskLevel] = useState<"HIGH" | "MEDIUM" | "LOW">("LOW")
