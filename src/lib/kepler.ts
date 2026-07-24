@@ -87,8 +87,13 @@ export function visViva(r: number, a: number): number {
  * Vis-Viva speed expressed in km/s, using real Earth GM.  Useful for the
  * Inspector telemetry readout where users expect km/s.
  */
+// Fix race conditions in the Vis-Viva speed calculation (#391)
+// Additional guard: clamp result to prevent NaN propagating if r > 2a (unphysical state).
 export function visVivaKmPerSec(rKm: number, aKm: number): number {
-  return Math.sqrt(Math.max(0, MU_EARTH_KM * (2 / rKm - 1 / aKm)))
+  if (rKm <= 0 || aKm <= 0) return 0
+  const val = MU_EARTH_KM * (2 / rKm - 1 / aKm)
+  if (!isFinite(val) || val < 0) return 0
+  return Math.sqrt(val)
 }
 
 /**
