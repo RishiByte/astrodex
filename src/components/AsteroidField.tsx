@@ -269,29 +269,29 @@ export function AsteroidField({ onAsteroidClick, getSelectedIndex }: AsteroidFie
     [onAsteroidClick]
   )
 
+  // Update dependencies for the Asteroid InstancedMesh
+  const asteroidGeo = useMemo(() => new THREE.DodecahedronGeometry(1, 0), [])
+  const asteroidMat = useMemo(() => new THREE.MeshStandardMaterial({ roughness: 0.8, metalness: 0.2 }), [])
+  const debrisGeo = useMemo(() => new THREE.BoxGeometry(0.7, 0.7, 0.7), [])
+  const debrisMat = useMemo(() => new THREE.MeshStandardMaterial({ roughness: 0.4, metalness: 0.8 }), [])
+
   return (
     <>
       {/* ─── Asteroids Field (Rocky) ─── */}
       <instancedMesh
         ref={asteroidMeshRef}
-        args={[null as any, null as any, ASTEROID_COUNT]}
+        args={[asteroidGeo, asteroidMat, ASTEROID_COUNT]}
         onClick={handleAsteroidClick}
         frustumCulled={false}
-      >
-        <dodecahedronGeometry args={[1, 0]} />
-        <meshStandardMaterial roughness={0.8} metalness={0.2} />
-      </instancedMesh>
+      />
 
       {/* ─── Space Debris Field (Spent parts, fragments) ─── */}
       <instancedMesh
         ref={debrisMeshRef}
-        args={[null as any, null as any, DEBRIS_COUNT]}
+        args={[debrisGeo, debrisMat, DEBRIS_COUNT]}
         onClick={handleDebrisClick}
         frustumCulled={false}
-      >
-        <boxGeometry args={[0.7, 0.7, 0.7]} />
-        <meshStandardMaterial roughness={0.4} metalness={0.8} />
-      </instancedMesh>
+      />
     </>
   )
 }
