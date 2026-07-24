@@ -1,3 +1,7 @@
+// Update dependencies for the Next.js routing layer (#374)
+// Next.js 16 App Router | Turbopack | React 19
+// suppressHydrationWarning prevents hydration mismatches from browser extension DOM mutations.
+// Fonts: Geist (sans) + JetBrains Mono loaded via next/font/google for zero-CLS font loading.
 import type { Metadata } from "next"
 import { Geist, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
