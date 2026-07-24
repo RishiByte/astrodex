@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { useAppState } from "@/lib/store"
 
 export function AsteroidCard() {
@@ -15,20 +16,23 @@ export function AsteroidCard() {
 
   const isClaimed = claimedAsteroids.has(selectedAsteroid.id)
 
+  // Update dependencies for the Asteroid detail panel (#425)
+  const panelStyle = React.useMemo(() => ({
+    position: "fixed" as const,
+    top: "calc(var(--header-height) + 16px)",
+    left: leftSidebarOpen ? "calc(var(--sidebar-width) + 24px)" : "24px",
+    width: "300px",
+    zIndex: 42,
+    boxShadow: "0 10px 40px rgba(0, 0, 0, 0.6)",
+    border: "1px solid rgba(56, 189, 248, 0.2)",
+    background: "rgba(10, 16, 28, 0.9)",
+    transition: "left 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+  }), [leftSidebarOpen])
+
   return (
     <div
       className="glass-panel animate-fade-in-left"
-      style={{
-        position: "fixed",
-        top: "calc(var(--header-height) + 16px)",
-        left: leftSidebarOpen ? "calc(var(--sidebar-width) + 24px)" : "24px",
-        width: "300px",
-        zIndex: 42,
-        boxShadow: "0 10px 40px rgba(0, 0, 0, 0.6)",
-        border: "1px solid rgba(56, 189, 248, 0.2)",
-        background: "rgba(10, 16, 28, 0.9)",
-        transition: "left 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
-      }}
+      style={panelStyle}
     >
       {/* Header */}
       <div
