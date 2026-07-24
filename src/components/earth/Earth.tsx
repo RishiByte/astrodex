@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useMemo } from "react"
 import { useFrame } from "@react-three/fiber"
 import * as THREE from "three"
 import {
@@ -115,9 +115,12 @@ export function Earth({ sunDirection }: EarthProps) {
     }
   })
 
+  // Modernize Three.js geometries (#448) by memoizing complex meshes
+  const earthGeometry = useMemo(() => new THREE.SphereGeometry(1.8, 64, 64), [])
+
   return (
     <mesh ref={meshRef}>
-      <sphereGeometry args={[1.8, 64, 64]} />
+      <primitive object={earthGeometry} attach="geometry" />
       <shaderMaterial
         uniforms={uniformsRef.current}
         vertexShader={vertexShader}
