@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useCallback, useRef, type ReactNode } from "react"
+import { createContext, useContext, useState, useCallback, useRef, useMemo, type ReactNode } from "react"
 import type { AsteroidData } from "./types"
 
 export interface ConjunctionAlert {
@@ -173,48 +173,83 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setRiskLevel("LOW")
   }, [])
 
-  return (
-    <AppContext.Provider
-      value={{
-        selectedAsteroid,
-        claimedAsteroids,
-        selectAsteroid,
-        claimAsteroid,
-        resetCamera,
-        triggerReset,
-        clearReset,
-        simulationRunning,
-        toggleSimulation,
-        riskLevel,
-        leftSidebarOpen,
-        rightSidebarOpen,
-        terminalExpanded,
-        toggleLeftSidebar,
-        toggleRightSidebar,
-        toggleTerminal,
-        searchAsteroidById,
-        registerAsteroidData,
-        filterType,
-        setFilterType,
-        satAltitude,
-        satInclination,
-        satRaan,
-        satEccentricity,
-        updateSatelliteParams,
-        updateSatelliteEccentricity,
-        decayAltitude,
-        boostBurn,
-        boostCount,
-        deltaVCount,
-        triggerDeltaVLog,
-        conjunctions,
-        addConjunctionAlert,
-        clearConjunctions,
-      }}
-    >
-      {children}
-    </AppContext.Provider>
+  // Update dependencies for the AppProvider context (#430)
+  const value = useMemo(
+    () => ({
+      selectedAsteroid,
+      claimedAsteroids,
+      selectAsteroid,
+      claimAsteroid,
+      resetCamera,
+      triggerReset,
+      clearReset,
+      simulationRunning,
+      toggleSimulation,
+      riskLevel,
+      leftSidebarOpen,
+      rightSidebarOpen,
+      terminalExpanded,
+      toggleLeftSidebar,
+      toggleRightSidebar,
+      toggleTerminal,
+      searchAsteroidById,
+      registerAsteroidData,
+      filterType,
+      setFilterType,
+      satAltitude,
+      satInclination,
+      satRaan,
+      satEccentricity,
+      updateSatelliteParams,
+      updateSatelliteEccentricity,
+      decayAltitude,
+      boostBurn,
+      boostCount,
+      deltaVCount,
+      triggerDeltaVLog,
+      conjunctions,
+      addConjunctionAlert,
+      clearConjunctions,
+    }),
+    [
+      selectedAsteroid,
+      claimedAsteroids,
+      selectAsteroid,
+      claimAsteroid,
+      resetCamera,
+      triggerReset,
+      clearReset,
+      simulationRunning,
+      toggleSimulation,
+      riskLevel,
+      leftSidebarOpen,
+      rightSidebarOpen,
+      terminalExpanded,
+      toggleLeftSidebar,
+      toggleRightSidebar,
+      toggleTerminal,
+      searchAsteroidById,
+      registerAsteroidData,
+      filterType,
+      setFilterType,
+      satAltitude,
+      satInclination,
+      satRaan,
+      satEccentricity,
+      updateSatelliteParams,
+      updateSatelliteEccentricity,
+      decayAltitude,
+      boostBurn,
+      boostCount,
+      deltaVCount,
+      triggerDeltaVLog,
+      conjunctions,
+      addConjunctionAlert,
+      clearConjunctions,
+    ]
   )
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 }
 
 export function useAppState() {
