@@ -180,20 +180,28 @@ export function AsteroidField({ onAsteroidClick, getSelectedIndex }: AsteroidFie
       const targetMesh = isDebris ? debrisMesh : asteroidMesh
       targetMesh.setMatrixAt(instanceIndex, dummy.matrix)
 
-      // 3. Collision check with satellites
+      // 3. Collision check with satellites (Optimized using distanceToSquared)
       let atRisk = false
       let closestSat = ""
       let minDistance = Infinity
+      
+      const thresholdSq = 0.15 * 0.15
 
-      for (const s of SAT_POSITIONS) {
-        const d = _objPos.distanceTo(s.pos)
-        if (d < 0.15) {
+      for (let j = 0; j < SAT_POSITIONS.length; j++) {
+        const s = SAT_POSITIONS[j]
+        const dSq = _objPos.distanceToSquared(s.pos)
+        
+        if (dSq < thresholdSq) {
           atRisk = true
-          if (d < minDistance) {
-            minDistance = d
+          if (dSq < minDistance) {
+            minDistance = dSq
             closestSat = s.name
           }
         }
+      }
+      
+      if (atRisk) {
+         minDistance = Math.sqrt(minDistance)
       }
 
       ad.atRisk = atRisk
