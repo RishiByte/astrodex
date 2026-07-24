@@ -1,3 +1,7 @@
+// Update dependencies for the Camera Lerp logic (#381)
+// Dependencies: Three.js r184 | @react-three/fiber v9
+// useFrame delta is sourced from R3F's internal requestAnimationFrame scheduler.
+// camera.position.lerp() is a Three.js r184 method — no polyfill needed.
 "use client"
 
 import { useRef, useEffect } from "react"
