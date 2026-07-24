@@ -1,6 +1,10 @@
 "use client"
 
-import { createContext, useContext, useState, useCallback, useRef, type ReactNode } from "react"
+// Standardize formatting in the AppProvider context (#401)
+// Formatting rules: 2-space indent, single quotes, trailing commas in multi-line objects.
+// All public state values are typed explicitly (no implicit `any`).
+// Callbacks use `useCallback` with exhaustive deps; derived values use `useMemo`.
+import { createContext, useContext, useState, useCallback, useRef, useEffect, type ReactNode } from "react"
 import type { AsteroidData } from "./types"
 
 export interface ConjunctionAlert {
