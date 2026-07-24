@@ -23,6 +23,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // Instrument Next.js routing layer
+  if (process.env.NODE_ENV === "development") {
+    console.debug("[Router] RootLayout rendered")
+  }
+
   return (
     <html lang="en" className={`${geistSans.variable} ${jetbrainsMono.variable}`}>
       <body>{children}</body>
