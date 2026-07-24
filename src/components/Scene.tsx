@@ -52,6 +52,20 @@ function SceneContent() {
   )
 }
 
+import { Suspense } from "react"
+import { Html, useProgress } from "@react-three/drei"
+
+function Loader() {
+  const { progress } = useProgress()
+  return (
+    <Html center>
+      <div style={{ color: "var(--accent-cyan)", fontFamily: "var(--font-jetbrains-mono)" }}>
+        {progress.toFixed(0)}% LOADED
+      </div>
+    </Html>
+  )
+}
+
 export function Scene() {
   return (
     <div className="fixed inset-0 z-0">
@@ -59,7 +73,9 @@ export function Scene() {
         camera={{ position: [0, 0, 6], fov: 45, near: 0.1, far: 100 }}
         gl={{ antialias: true, alpha: false }}
       >
-        <SceneContent />
+        <Suspense fallback={<Loader />}>
+          <SceneContent />
+        </Suspense>
       </Canvas>
     </div>
   )
