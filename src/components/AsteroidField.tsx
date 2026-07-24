@@ -199,7 +199,8 @@ export function AsteroidField({ onAsteroidClick, getSelectedIndex }: AsteroidFie
       ad.atRisk = atRisk
 
       // Handle conjunction alerts in the store (throttle to once per 8 seconds per object)
-      if (atRisk && simulationRunning && activeScale > 0) {
+      // Fix edge cases in the Conjunction tracker (#454): Ensure minDistance is valid and simulation is stable
+      if (atRisk && simulationRunning && activeScale > 0 && Number.isFinite(minDistance)) {
         const lastAlert = lastAlertTimesRef.current[i] || 0
         if (t - lastAlert > 8) {
           lastAlertTimesRef.current[i] = t
