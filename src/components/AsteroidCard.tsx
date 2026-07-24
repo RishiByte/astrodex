@@ -113,32 +113,19 @@ export function AsteroidCard() {
         {/* Orbit Visual Diagram Placeholder or Stats */}
         <div className="panel-section" style={{ marginBottom: 14 }}>
           <div className="panel-section-title">Orbital Mechanics</div>
-          <div className="kv-row">
-            <span className="kv-label">Semi-Major Axis</span>
-            <span className="kv-value">{(selectedAsteroid.orbitRadius * 0.15).toFixed(3)} AU</span>
-          </div>
-          <div className="kv-row">
-            <span className="kv-label">Mean Orbit Radius</span>
-            <span className="kv-value">{selectedAsteroid.orbitRadius.toFixed(2)} R⊕</span>
-          </div>
-          <div className="kv-row">
-            <span className="kv-label">Inclination Angle</span>
-            <span className="kv-value">
-              {(selectedAsteroid.inclination * (180 / Math.PI)).toFixed(1)}°
-            </span>
-          </div>
-          <div className="kv-row">
-            <span className="kv-label">Object Velocity</span>
-            <span className="kv-value">{selectedAsteroid.velocity}</span>
-          </div>
-          <div className="kv-row">
-            <span className="kv-label">Est. Diameter</span>
-            <span className="kv-value">{(selectedAsteroid.scale * 120).toFixed(1)} km</span>
-          </div>
-          <div className="kv-row">
-            <span className="kv-label">Relative Dist.</span>
-            <span className="kv-value">{selectedAsteroid.distance}</span>
-          </div>
+          {[
+            { label: "Semi-Major Axis", value: `${(selectedAsteroid.orbitRadius * 0.15).toFixed(3)} AU` },
+            { label: "Mean Orbit Radius", value: `${selectedAsteroid.orbitRadius.toFixed(2)} R⊕` },
+            { label: "Inclination Angle", value: `${(selectedAsteroid.inclination * (180 / Math.PI)).toFixed(1)}°` },
+            { label: "Object Velocity", value: selectedAsteroid.velocity },
+            { label: "Est. Diameter", value: `${(selectedAsteroid.scale * 120).toFixed(1)} km` },
+            { label: "Relative Dist.", value: selectedAsteroid.distance },
+          ].map((stat, idx) => (
+            <div className="kv-row" key={idx}>
+              <span className="kv-label">{stat.label}</span>
+              <span className="kv-value">{stat.value}</span>
+            </div>
+          ))}
         </div>
 
         {/* Action Buttons */}
