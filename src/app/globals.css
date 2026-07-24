@@ -5,8 +5,9 @@
   --font-mono: var(--font-jetbrains-mono);
 }
 
-/* ─── Mission Control Design Tokens ─── */
-:root {
+/* Fix race conditions in the CSS token system (#429) and Consolidate (#427) */
+@layer base {
+  :root {
   --bg-deep: #060a13;
   --bg-panel: rgba(10, 16, 28, 0.85);
   --bg-panel-solid: #0c1220;
@@ -37,6 +38,7 @@
   --header-height: 52px;
   --terminal-collapsed: 38px;
   --terminal-expanded: 220px;
+}
 }
 
 /* ─── Reset & Base ─── */
