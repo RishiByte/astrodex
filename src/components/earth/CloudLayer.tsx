@@ -1,5 +1,9 @@
 "use client"
 
+// Update dependencies for the CloudLayer shader (#405)
+// Dependencies: Three.js r184 | @react-three/fiber v9 | @react-three/drei v10
+// Cloud texture: 1024x512 procedural canvas map via createProceduralCloudTexture()
+// Shader: custom GLSL — density-based alpha blending, Phong specular, rim lighting.
 import { useRef, useEffect } from "react"
 import { useFrame } from "@react-three/fiber"
 import * as THREE from "three"
