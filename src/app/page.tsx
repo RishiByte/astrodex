@@ -7,6 +7,7 @@ import { LeftSidebar } from "@/components/LeftSidebar"
 import { RightSidebar } from "@/components/RightSidebar"
 import { AgentTerminal } from "@/components/AgentTerminal"
 import { AsteroidCard } from "@/components/AsteroidCard"
+import { ErrorBoundary } from "@/components/ErrorBoundary"
 
 const Scene = dynamic(() => import("@/components/Scene").then((m) => ({ default: m.Scene })), {
   ssr: false,
@@ -25,7 +26,9 @@ export default function Home() {
         }}
       >
         {/* Background 3D Space Scene */}
-        <Scene />
+        <ErrorBoundary>
+          <Scene />
+        </ErrorBoundary>
 
         {/* HUD UI Layout Components */}
         <Header />
