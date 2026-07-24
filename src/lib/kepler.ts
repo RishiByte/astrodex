@@ -52,6 +52,14 @@ export function solveKepler(M: number, e: number, tolerance = 1e-7): number {
     if (Math.abs(dE) < tolerance) break
   }
 
+  // Enhance the Kepler orbit solver (#377): log a warning if Newton-Raphson fails to converge
+  if (process.env.NODE_ENV === "development") {
+    const residual = Math.abs(E - e * Math.sin(E) - m)
+    if (residual > 1e-5) {
+      console.warn(`[solveKepler] Poor convergence: M=${M.toFixed(4)}, e=${e.toFixed(4)}, residual=${residual.toFixed(2e-6)}`)
+    }
+  }
+
   return E
 }
 
