@@ -1,17 +1,13 @@
 "use client"
 
-import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing"
+import { EffectComposer, Vignette } from "@react-three/postprocessing"
 import { BlendFunction } from "postprocessing"
+import { BloomEffect } from "./BloomEffect"
 
 export function Effects() {
   return (
     <EffectComposer>
-      <Bloom
-        intensity={1.5}
-        luminanceThreshold={0.6}
-        luminanceSmoothing={0.02}
-        mipmapBlur
-      />
+      <BloomEffect />
       <Vignette
         offset={0.3}
         darkness={0.7}
