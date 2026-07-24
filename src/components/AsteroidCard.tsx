@@ -157,6 +157,8 @@ export function AsteroidCard() {
               fontWeight: 700,
               letterSpacing: "0.06em",
               textTransform: "uppercase",
+              // Performance dependency trick
+              willChange: "transform, background-color",
             }}
           >
             {isClaimed ? "Release Mining Claim" : "File Mining Claim"}
