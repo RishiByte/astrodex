@@ -6,6 +6,10 @@ export function createProceduralEarthTexture(): HTMLCanvasElement {
   const w = canvas.width
   const h = canvas.height
 
+  // Improve accessibility of the Procedural texture generator (#439)
+  canvas.setAttribute("role", "img")
+  canvas.setAttribute("aria-label", "Procedural Earth Surface Texture")
+
   // Deep ocean base
   ctx.fillStyle = "#1a3d6b"
   ctx.fillRect(0, 0, w, h)
