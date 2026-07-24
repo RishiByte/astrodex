@@ -107,6 +107,14 @@ export function Earth({ sunDirection }: EarthProps) {
     uniformsRef.current.cloudShadowTexture.value = cloud
     // sunDirection is constant — set once
     uniformsRef.current.sunDirection.value.copy(sunDirection)
+
+    // Audit memory leaks in the Canvas 2D texture pipeline (#428)
+    return () => {
+      day.dispose()
+      night.dispose()
+      spec.dispose()
+      cloud.dispose()
+    }
   }, [sunDirection])
 
   useFrame((_, delta) => {
