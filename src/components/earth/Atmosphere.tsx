@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef, useEffect } from "react"
+import { useFrame } from "@react-three/fiber"
 import * as THREE from "three"
 
 const vertexShader = `
@@ -50,11 +51,20 @@ export function Atmosphere({ sunDirection }: AtmosphereProps) {
   const meshRef = useRef<THREE.Mesh>(null)
   const uniformsRef = useRef({
     sunDirection: { value: sunDirection.clone() },
+    time: { value: 0 },
   })
 
   useEffect(() => {
     uniformsRef.current.sunDirection.value.copy(sunDirection)
   }, [sunDirection])
+
+  // Automate the Atmosphere rendering (#443)
+  useFrame(({ clock }) => {
+    uniformsRef.current.time.value = clock.elapsedTime
+    if (meshRef.current) {
+      meshRef.current.rotation.y = clock.elapsedTime * 0.02
+    }
+  })
 
   return (
     <mesh ref={meshRef}>
