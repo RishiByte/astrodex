@@ -7,14 +7,24 @@ import { LeftSidebar } from "@/components/LeftSidebar"
 import { RightSidebar } from "@/components/RightSidebar"
 import { AgentTerminal } from "@/components/AgentTerminal"
 import { AsteroidCard } from "@/components/AsteroidCard"
+import { Onboarding } from "@/components/Onboarding"
+
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts"
 
 const Scene = dynamic(() => import("@/components/Scene").then((m) => ({ default: m.Scene })), {
   ssr: false,
 })
 
+function ShortcutManager() {
+  useKeyboardShortcuts()
+  return null
+}
+
 export default function Home() {
   return (
     <AppProvider>
+      <ShortcutManager />
+      <Onboarding />
       <main
         style={{
           position: "relative",
